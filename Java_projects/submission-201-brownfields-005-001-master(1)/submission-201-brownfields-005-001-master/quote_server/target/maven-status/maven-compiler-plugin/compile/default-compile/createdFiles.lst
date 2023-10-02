@@ -1,0 +1,6 @@
+app/QuteQuotes.class
+app/database/QuoteDB.class
+app/database/TestDatabase.class
+app/database/Quote.class
+app/QuoteApiHandler.class
+app/database/DbManager.class
