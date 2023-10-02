@@ -1,0 +1,28 @@
+#Command to show properties of the world
+curl --request GET 'http://localhost:5001/world' --include
+#Command to restore a world from the database (Make sure world exists)
+curl --request GET 'http://localhost:5001/world/World01' --include
+#Command to LAUNCH a robot into ApiServer Replace Hal with whatever name you choose.
+curl --request POST 'http://localhost:5000/robot/{Hal}' -d '{
+  "robot": "Hal",
+  "command": "launch",
+  "arguments": [ "sniper",
+                 "5",
+                 "5"
+               ]
+}' --include
+curl --request POST 'http://localhost:5001/robot/{Hal}' -d '{
+  "robot": "Hal",
+  "command": "forward",
+  "arguments": [ "5"
+               ]
+}' --include
+
+curl --request POST 'http://localhost:5001/robot/{Hal}' -d '{
+  "robot": "Hal",
+  "command": "mine",
+  "arguments": [ "1"
+               ]
+}' --include
+
+

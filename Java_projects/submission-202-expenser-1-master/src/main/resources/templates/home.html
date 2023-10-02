@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout.html}">
+<head>
+        <link rel="stylesheet" href="../html/css/normalsize.css">
+        <link rel="stylesheet" href="../html/css/main.css">
+</head>
+<body>
+<div layout:fragment="contents">
+        <section>
+                <h1>My Expenses</h1>
+                <p>
+                        <a id = "add_expense" href = "/newexpense">
+                                Add new expense</a>
+                </p>
+
+                <div th:if="${not #lists.isEmpty(userExpenses)}">
+                        <table id="expenses">
+                        <thead>
+                                <tr style="text-align: left;">
+                                        <th>when</th>
+                                        
+                                        <th>what</th>
+                                        <th></th>
+                                        <th>how much</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="expenses : ${userExpenses}">
+                                <td th:id="${#ids.seq('date_')}"
+                                th:text="${expenses.date}">sett</td>
+                                
+                                <td><a th:id="${#ids.seq('claim_expense_')}"
+                                th:text="${expenses.description}"
+                                        th:href="@{'/claimexpense?expenseId=' + ${expenses.getId()}}"></a></td>
+                                <td></td>
+                                <td th:id="${#ids.seq('amount_')}"><span
+                                        th:text="${#numbers.formatDecimal(expenses.getNettAmount, 0, 'COMMA', 2, 'POINT')}">
+                                        </span></td>
+                                
+                        </tr>
+                        <tr>
+                                <td id="expenses_total" style="margin-left: 22em;"
+                                    th:text="${#numbers.formatDecimal(userTotal, 0, 'COMMA', 2, 'POINT')}"></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <div style="clear: both;"></div>
+                        </div>
+                
+                        <div th:if ="${#lists.isEmpty(userExpense)}">
+                                <p id="no_expenses">You don't have any expenses!</p>
+                        </div>
+        </section>
+        <section>
+                <h1>People that owe me</h1>
+
+                <div th:if="${not #lists.isEmpty(userClaimBy)}">
+                        <table id = "they_owe_me">
+                                <thead>
+                                        <tr style="text-align: left;">
+                                                <th>who</th>
+                                                <th>what</th>
+                                                <th>due</th>
+                                                <th>how much</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="claimsby : ${userClaimBy}">
+                                <td th:text = "${claimsby.claimedFrom.getName}">Mike</td>
+                                        
+                                        <td><a th:text="${claimsby.description}"></a></td>
+                                        
+                                        <td td
+                                        th:text="${claimsby.dueDate}"></td>
+                                        
+                                        <td ><span
+                                                th:text="${#numbers.formatDecimal(claimsby.amount, 0, 'COMMA', 2, 'POINT')}">
+                                                </span></td>
+                                </tr>
+                                </tbody>
+                        </table>
+                        <p id="they_owe_me_total" style="margin-left: 22em;"><span
+                                th:text="${#numbers.formatDecimal(userUnsettledClaimsBy, 0, 'COMMA', 2, 'POINT')}"></span></p>
+                        <div style = "clear: both;"></div>
+
+                </div>
+                <div th:if="${#lists.isEmpty(userClaimBy)}">
+                        <p id="nobody_owes">Nobody owes you any money!</p>
+                </div>  
+        </section>
+        <section>
+                <h1>People I owe</h1>
+
+                <div th:if = "${not #lists.isEmpty(userClaimFrom)}">
+                        <table id = "i_owe_them">
+                                <thead>
+                                        <tr style = "text-align: left;">
+                                                <th>who</th>
+                                                <th>what</th>
+                                                <th>due</th>
+                                                <th>how much</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each = "claimsfrom : ${userClaimFrom}">
+                                <td th:text = "${claimsfrom.claimedFrom.getName}">Mike</td>
+                                        
+                                        <td><a th:id="${#ids.seq('settle_')}"
+                                        th:text="${claimsfrom.description}"></a></td>
+                                        
+                                        <td
+                                        th:text="${claimsfrom.dueDate}"></td>
+                                        
+                                        <td><span
+                                                th:text="${#numbers.formatDecimal(claimsfrom.amount, 0, 'COMMA', 2, 'POINT')}">
+                                                </span></td>
+                                </tr>
+                                </tbody>
+                        </table>
+                        <p id="i_owe_them_total" style="margin-left: 22em;"><span
+                                th:text="${#numbers.formatDecimal(userUnsettledClaimsFrom, 0, 'COMMA', 2, 'POINT')}">
+
+                        </span></p>
+                        <div style="clear: both;"></div>
+                        <div id="nett_expenses" th:text="${#numbers.formatDecimal(userNetExpenses, 0, 'COMMA', 2, 'POINT')}"></div>
+                        
+                </div>
+
+                <div th:if="${#lists.isEmpty(userClaimFrom)}">
+                        <p id="owe_nobody">You don't owe anyone!</p>
+                </div>
+
+                <!--     -->
+        </section>
+</div>
+</body>
+</html>
