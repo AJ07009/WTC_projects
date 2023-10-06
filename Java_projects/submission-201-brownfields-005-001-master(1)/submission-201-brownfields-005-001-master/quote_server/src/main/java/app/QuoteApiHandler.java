@@ -37,7 +37,7 @@ class QuoteApiHandler {
         Integer id = context.pathParamAsClass("id", Integer.class).get();
         Quote quote = database.get(id);
         if (quote == null){
-            throw new NotFoundResponse("welp there is fokkol here" + id);
+            throw new NotFoundResponse("Nothing found" + id);
         }
         context.json(quote);
     }
